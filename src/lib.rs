@@ -14,7 +14,7 @@ pub trait ReadBytes: Read {
     /// ```
     fn read_u8(&mut self) -> Result<u8, io::Error> {
         let mut buffer = [0; 1];
-        self.read_exact(&mut buffer[..])?;
+        self.read_exact(&mut buffer)?;
 
         Ok(u8::from_be_bytes(buffer))
     }
@@ -44,7 +44,7 @@ pub trait ReadBytes: Read {
     /// ```
     fn read_u16(&mut self) -> Result<u16, io::Error> {
         let mut buffer = [0; 2];
-        self.read_exact(&mut buffer[..])?;
+        self.read_exact(&mut buffer)?;
 
         Ok(u16::from_be_bytes(buffer))
     }
@@ -74,7 +74,7 @@ pub trait ReadBytes: Read {
     /// ```
     fn read_u32(&mut self) -> Result<u32, io::Error> {
         let mut buffer = [0; 4];
-        self.read_exact(&mut buffer[..])?;
+        self.read_exact(&mut buffer)?;
 
         Ok(u32::from_be_bytes(buffer))
     }
@@ -104,7 +104,7 @@ pub trait ReadBytes: Read {
     /// ```
     fn read_u64(&mut self) -> Result<u64, io::Error> {
         let mut buffer = [0; 8];
-        self.read_exact(&mut buffer[..])?;
+        self.read_exact(&mut buffer)?;
 
         Ok(u64::from_be_bytes(buffer))
     }
@@ -134,7 +134,7 @@ pub trait ReadBytes: Read {
     /// ```
     fn read_u128(&mut self) -> Result<u128, io::Error> {
         let mut buffer = [0; 16];
-        self.read_exact(&mut buffer[..])?;
+        self.read_exact(&mut buffer)?;
 
         Ok(u128::from_be_bytes(buffer))
     }
