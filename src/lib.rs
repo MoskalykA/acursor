@@ -82,9 +82,9 @@ pub trait ReadBytes: Read {
             _ => unimplemented!(),
         };
         let mut buffer = vec![0; size];
-        let n = self.read(&mut buffer[..])?;
+        self.read(&mut buffer[..])?;
 
-        Ok(String::from_utf8(buffer[..n].try_into().unwrap()).unwrap())
+        Ok(String::from_utf8(buffer).unwrap())
     }
 }
 
