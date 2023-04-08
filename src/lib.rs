@@ -6,70 +6,70 @@ use std::{
 pub trait ReadBytes: Read {
     fn read_u8(&mut self) -> Result<u8, io::Error> {
         let mut buffer = [0; 1];
-        self.read(&mut buffer[..])?;
+        self.read_exact(&mut buffer[..])?;
 
         Ok(u8::from_be_bytes(buffer))
     }
 
     fn read_i8(&mut self) -> Result<i8, io::Error> {
         let mut buffer = [0; 1];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(i8::from_be_bytes(buffer))
     }
 
     fn read_u16(&mut self) -> Result<u16, io::Error> {
         let mut buffer = [0; 2];
-        self.read(&mut buffer[..])?;
+        self.read_exact(&mut buffer[..])?;
 
         Ok(u16::from_be_bytes(buffer))
     }
 
     fn read_i16(&mut self) -> Result<i16, io::Error> {
         let mut buffer = [0; 2];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(i16::from_be_bytes(buffer))
     }
 
     fn read_u32(&mut self) -> Result<u32, io::Error> {
         let mut buffer = [0; 4];
-        self.read(&mut buffer[..])?;
+        self.read_exact(&mut buffer[..])?;
 
         Ok(u32::from_be_bytes(buffer))
     }
 
     fn read_i32(&mut self) -> Result<i32, io::Error> {
         let mut buffer = [0; 4];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(i32::from_be_bytes(buffer))
     }
 
     fn read_u64(&mut self) -> Result<u64, io::Error> {
         let mut buffer = [0; 8];
-        self.read(&mut buffer[..])?;
+        self.read_exact(&mut buffer[..])?;
 
         Ok(u64::from_be_bytes(buffer))
     }
 
     fn read_i64(&mut self) -> Result<i64, io::Error> {
         let mut buffer = [0; 8];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(i64::from_be_bytes(buffer))
     }
 
     fn read_u128(&mut self) -> Result<u128, io::Error> {
         let mut buffer = [0; 16];
-        self.read(&mut buffer[..])?;
+        self.read_exact(&mut buffer[..])?;
 
         Ok(u128::from_be_bytes(buffer))
     }
 
     fn read_i128(&mut self) -> Result<i128, io::Error> {
         let mut buffer = [0; 16];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(i128::from_be_bytes(buffer))
     }
@@ -82,7 +82,7 @@ pub trait ReadBytes: Read {
             _ => unimplemented!(),
         };
         let mut buffer = vec![0; size];
-        self.read(&mut buffer)?;
+        self.read_exact(&mut buffer)?;
 
         Ok(String::from_utf8(buffer).unwrap())
     }
