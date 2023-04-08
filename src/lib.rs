@@ -75,13 +75,13 @@ pub trait ReadBytes: Read {
     }
 
     fn read_string<T>(&mut self) -> Result<String, io::Error> {
-        let size: u32 = match type_name::<T>() {
+        let size: usize = match type_name::<T>() {
             "u8" => self.read_u8()?.try_into().unwrap(),
             "u16" => self.read_u16()?.try_into().unwrap(),
-            "u32" => self.read_u32()?,
+            "u32" => self.read_u32()?.try_into().unwrap(),
             _ => unimplemented!(),
         };
-        let mut buffer = vec![0; size as usize];
+        let mut buffer = vec![0; size];
         let n = self.read(&mut buffer[..])?;
 
         Ok(String::from_utf8(buffer[..n].try_into().unwrap()).unwrap())
