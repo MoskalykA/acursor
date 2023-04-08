@@ -11,11 +11,25 @@ pub trait ReadBytes: Read {
         Ok(u8::from_be_bytes(buffer[..n].try_into().unwrap()))
     }
 
+    fn read_i8(&mut self) -> Result<i8, io::Error> {
+        let mut buffer = [0; 1];
+        self.read(&mut buffer)?;
+
+        Ok(i8::from_be_bytes(buffer))
+    }
+
     fn read_u16(&mut self) -> Result<u16, io::Error> {
         let mut buffer = [0; 2];
         let n = self.read(&mut buffer[..])?;
 
         Ok(u16::from_be_bytes(buffer[..n].try_into().unwrap()))
+    }
+
+    fn read_i16(&mut self) -> Result<i16, io::Error> {
+        let mut buffer = [0; 2];
+        self.read(&mut buffer)?;
+
+        Ok(i16::from_be_bytes(buffer))
     }
 
     fn read_u32(&mut self) -> Result<u32, io::Error> {
@@ -25,6 +39,13 @@ pub trait ReadBytes: Read {
         Ok(u32::from_be_bytes(buffer[..n].try_into().unwrap()))
     }
 
+    fn read_i32(&mut self) -> Result<i32, io::Error> {
+        let mut buffer = [0; 4];
+        self.read(&mut buffer)?;
+
+        Ok(i32::from_be_bytes(buffer))
+    }
+
     fn read_u64(&mut self) -> Result<u64, io::Error> {
         let mut buffer = [0; 8];
         let n = self.read(&mut buffer[..])?;
@@ -32,11 +53,25 @@ pub trait ReadBytes: Read {
         Ok(u64::from_be_bytes(buffer[..n].try_into().unwrap()))
     }
 
+    fn read_i64(&mut self) -> Result<i64, io::Error> {
+        let mut buffer = [0; 8];
+        self.read(&mut buffer)?;
+
+        Ok(i64::from_be_bytes(buffer))
+    }
+
     fn read_u128(&mut self) -> Result<u128, io::Error> {
         let mut buffer = [0; 16];
         let n = self.read(&mut buffer[..])?;
 
         Ok(u128::from_be_bytes(buffer[..n].try_into().unwrap()))
+    }
+
+    fn read_i128(&mut self) -> Result<i128, io::Error> {
+        let mut buffer = [0; 16];
+        self.read(&mut buffer)?;
+
+        Ok(i128::from_be_bytes(buffer))
     }
 
     fn read_string<T>(&mut self) -> Result<String, io::Error> {
@@ -60,7 +95,19 @@ pub trait WriteBytes: Write {
         Ok(())
     }
 
+    fn write_i8(&mut self, number: i8) -> Result<(), io::Error> {
+        self.write_all(&number.to_be_bytes())?;
+
+        Ok(())
+    }
+
     fn write_u16(&mut self, number: u16) -> Result<(), io::Error> {
+        self.write_all(&number.to_be_bytes())?;
+
+        Ok(())
+    }
+
+    fn write_i16(&mut self, number: i16) -> Result<(), io::Error> {
         self.write_all(&number.to_be_bytes())?;
 
         Ok(())
@@ -72,13 +119,31 @@ pub trait WriteBytes: Write {
         Ok(())
     }
 
+    fn write_i32(&mut self, number: i32) -> Result<(), io::Error> {
+        self.write_all(&number.to_be_bytes())?;
+
+        Ok(())
+    }
+
     fn write_u64(&mut self, number: u64) -> Result<(), io::Error> {
         self.write_all(&number.to_be_bytes())?;
 
         Ok(())
     }
 
+    fn write_i64(&mut self, number: i64) -> Result<(), io::Error> {
+        self.write_all(&number.to_be_bytes())?;
+
+        Ok(())
+    }
+
     fn write_u128(&mut self, number: u128) -> Result<(), io::Error> {
+        self.write_all(&number.to_be_bytes())?;
+
+        Ok(())
+    }
+
+    fn write_i128(&mut self, number: i128) -> Result<(), io::Error> {
         self.write_all(&number.to_be_bytes())?;
 
         Ok(())
