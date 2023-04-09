@@ -25,6 +25,27 @@ macro_rules! generate_read_number {
     };
 }
 
+macro_rules! generate_read_float {
+    ($type:ty, $bytes:expr) => {
+        concat_idents!(fn_name = read_, $type {
+            /// # Examples
+            ///
+            /// ```
+            /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+            #[doc = concat!("cursor.write_", stringify!($type), "(100.0).unwrap();")]
+            ///
+            #[doc = concat!("println!(\"My number: {:?}\", cursor.read_", stringify!($type), "().unwrap());")]
+            /// ```
+            fn fn_name(&mut self) -> Result<$type, io::Error> {
+                let mut buffer = [0; $bytes];
+                self.read_exact(&mut buffer)?;
+        
+                Ok($type::from_be_bytes(buffer))
+            }
+        });
+    };
+}
+
 pub trait ReadBytes: Read {
     generate_read_number!(u8, 1);
     generate_read_number!(i8, 1);
@@ -36,6 +57,9 @@ pub trait ReadBytes: Read {
     generate_read_number!(i64, 8);
     generate_read_number!(u128, 16);
     generate_read_number!(i128, 16);
+
+    generate_read_float!(f32, 4);
+    generate_read_float!(f64, 8);
 
     /// # Examples
     ///

@@ -1,2 +1,1 @@
-- Have the support of the float
 - Support the LitlleEndian
