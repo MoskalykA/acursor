@@ -7,3 +7,6 @@ description = "Various functions to write data with a Cursor"
 documentation = "https://docs.rs/acursor"
 repository = "https://github.com/MoskalykA/acursor"
 license = "MIT"
+
+[dependencies]
+concat-idents = "1.1.4"

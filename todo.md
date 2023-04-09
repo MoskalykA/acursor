@@ -1,4 +1,3 @@
-- Make the macro `generate_write_number!` no longer take the function name as a parameter
 - Create a macro for writing numbers
 - Have the support of the float
 - Support the LitlleEndian
