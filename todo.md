@@ -1,0 +1,3 @@
+- Make the macro `generate_write_number!` no longer take the function name as a parameter
+- Create a macro for the generation of numbers
+- Have the support of the float
