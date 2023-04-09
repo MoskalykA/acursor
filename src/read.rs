@@ -18,7 +18,7 @@ macro_rules! generate_read_number {
             fn fn_name(&mut self) -> Result<$type, io::Error> {
                 let mut buffer = [0; $bytes];
                 self.read_exact(&mut buffer)?;
-        
+
                 Ok($type::from_be_bytes(buffer))
             }
         });
@@ -39,7 +39,7 @@ macro_rules! generate_read_float {
             fn fn_name(&mut self) -> Result<$type, io::Error> {
                 let mut buffer = [0; $bytes];
                 self.read_exact(&mut buffer)?;
-        
+
                 Ok($type::from_be_bytes(buffer))
             }
         });
