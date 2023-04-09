@@ -3,146 +3,35 @@ use std::{
     io::{self, Write},
 };
 
+macro_rules! generate_write_number {
+    ($func_name:ident, $type:ty) => {
+        /// # Examples
+        ///
+        /// ```
+        /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+        #[doc = concat!("cursor.", stringify!($func_name), "(100).unwrap();")]
+        ///
+        #[doc = concat!("println!(\"My number: {:?}\", cursor.read_", stringify!($type), "().unwrap());")]
+        /// ```
+        fn $func_name(&mut self, number: $type) -> Result<(), io::Error> {
+            self.write_all(&number.to_be_bytes())?;
+
+            Ok(())
+        }
+    };
+}
+
 pub trait WriteBytes: Write {
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u8(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u8().unwrap());
-    /// ```
-    fn write_u8(&mut self, number: u8) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i8(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i8().unwrap());
-    /// ```
-    fn write_i8(&mut self, number: i8) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u16(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u16().unwrap());
-    /// ```
-    fn write_u16(&mut self, number: u16) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i16(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i16().unwrap());
-    /// ```
-    fn write_i16(&mut self, number: i16) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u32(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u32().unwrap());
-    /// ```
-    fn write_u32(&mut self, number: u32) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i32(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i32().unwrap());
-    /// ```
-    fn write_i32(&mut self, number: i32) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u64(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u64().unwrap());
-    /// ```
-    fn write_u64(&mut self, number: u64) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i64(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i64().unwrap());
-    /// ```
-    fn write_i64(&mut self, number: i64) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u128(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u128().unwrap());
-    /// ```
-    fn write_u128(&mut self, number: u128) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i128(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i128().unwrap());
-    /// ```
-    fn write_i128(&mut self, number: i128) -> Result<(), io::Error> {
-        self.write_all(&number.to_be_bytes())?;
-
-        Ok(())
-    }
+    generate_write_number!(write_u8, u8);
+    generate_write_number!(write_i8, i8);
+    generate_write_number!(write_u16, u16);
+    generate_write_number!(write_i16, i16);
+    generate_write_number!(write_u32, u32);
+    generate_write_number!(write_i32, i32);
+    generate_write_number!(write_u64, u64);
+    generate_write_number!(write_i64, i64);
+    generate_write_number!(write_u128, u128);
+    generate_write_number!(write_i128, i128);
 
     /// # Examples
     ///
