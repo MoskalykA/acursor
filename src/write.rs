@@ -24,6 +24,26 @@ macro_rules! generate_write_number {
     };
 }
 
+macro_rules! generate_write_float {
+    ($type:ty) => {
+        concat_idents!(fn_name = write_, $type {
+            /// # Examples
+            ///
+            /// ```
+            /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+            #[doc = concat!("cursor.write_", stringify!($type), "(100.0).unwrap();")]
+            ///
+            #[doc = concat!("println!(\"My number: {:?}\", cursor.read_", stringify!($type), "().unwrap());")]
+            /// ```
+            fn fn_name(&mut self, number: $type) -> Result<(), io::Error> {
+                self.write_all(&number.to_be_bytes())?;
+
+                Ok(())
+            }
+        });
+    };
+}
+
 pub trait WriteBytes: Write {
     generate_write_number!(u8);
     generate_write_number!(i8);
@@ -35,6 +55,9 @@ pub trait WriteBytes: Write {
     generate_write_number!(i64);
     generate_write_number!(u128);
     generate_write_number!(i128);
+
+    generate_write_float!(f32);
+    generate_write_float!(f64);
 
     /// # Examples
     ///
