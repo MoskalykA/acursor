@@ -1,158 +1,41 @@
+use concat_idents::concat_idents;
 use std::{
     any::type_name,
     io::{self, Read},
 };
 
+macro_rules! generate_read_number {
+    ($type:ty, $bytes:expr) => {
+        concat_idents!(fn_name = read_, $type {
+            /// # Examples
+            ///
+            /// ```
+            /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+            #[doc = concat!("cursor.write_", stringify!($type), "(100).unwrap();")]
+            ///
+            #[doc = concat!("println!(\"My number: {:?}\", cursor.read_", stringify!($type), "().unwrap());")]
+            /// ```
+            fn fn_name(&mut self) -> Result<$type, io::Error> {
+                let mut buffer = [0; $bytes];
+                self.read_exact(&mut buffer)?;
+        
+                Ok($type::from_be_bytes(buffer))
+            }
+        });
+    };
+}
+
 pub trait ReadBytes: Read {
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u8(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u8().unwrap());
-    /// ```
-    fn read_u8(&mut self) -> Result<u8, io::Error> {
-        let mut buffer = [0; 1];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u8::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i8(-100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i8().unwrap());
-    /// ```
-    fn read_i8(&mut self) -> Result<i8, io::Error> {
-        let mut buffer = [0; 1];
-        self.read_exact(&mut buffer)?;
-
-        Ok(i8::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u16(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u16().unwrap());
-    /// ```
-    fn read_u16(&mut self) -> Result<u16, io::Error> {
-        let mut buffer = [0; 2];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u16::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i16(-100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i16().unwrap());
-    /// ```
-    fn read_i16(&mut self) -> Result<i16, io::Error> {
-        let mut buffer = [0; 2];
-        self.read_exact(&mut buffer)?;
-
-        Ok(i16::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u32(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u32().unwrap());
-    /// ```
-    fn read_u32(&mut self) -> Result<u32, io::Error> {
-        let mut buffer = [0; 4];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u32::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i32(-100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i32().unwrap());
-    /// ```
-    fn read_i32(&mut self) -> Result<i32, io::Error> {
-        let mut buffer = [0; 4];
-        self.read_exact(&mut buffer)?;
-
-        Ok(i32::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u64(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u64().unwrap());
-    /// ```
-    fn read_u64(&mut self) -> Result<u64, io::Error> {
-        let mut buffer = [0; 8];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u64::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i64(-100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i64().unwrap());
-    /// ```
-    fn read_i64(&mut self) -> Result<i64, io::Error> {
-        let mut buffer = [0; 8];
-        self.read_exact(&mut buffer)?;
-
-        Ok(i64::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_u128(100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_u128().unwrap());
-    /// ```
-    fn read_u128(&mut self) -> Result<u128, io::Error> {
-        let mut buffer = [0; 16];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u128::from_be_bytes(buffer))
-    }
-
-    /// # Examples
-    ///
-    /// ```
-    /// let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-    /// cursor.write_i128(-100).unwrap();
-    ///
-    /// println!("My number: {:?}", cursor.read_i128().unwrap());
-    /// ```
-    fn read_i128(&mut self) -> Result<i128, io::Error> {
-        let mut buffer = [0; 16];
-        self.read_exact(&mut buffer)?;
-
-        Ok(i128::from_be_bytes(buffer))
-    }
+    generate_read_number!(u8, 1);
+    generate_read_number!(i8, 1);
+    generate_read_number!(u16, 2);
+    generate_read_number!(i16, 2);
+    generate_read_number!(u32, 4);
+    generate_read_number!(i32, 4);
+    generate_read_number!(u64, 8);
+    generate_read_number!(i64, 8);
+    generate_read_number!(u128, 16);
+    generate_read_number!(i128, 16);
 
     /// # Examples
     ///

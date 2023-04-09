@@ -1,3 +1,2 @@
-- Create a macro for writing numbers
 - Have the support of the float
 - Support the LitlleEndian
